@@ -25,4 +25,6 @@ uvicorn[standard]>=0.30  # если будешь использовать ASGI (
 python-dotenv>=1.0         # для загрузки .env
 requests>=2.31             # HTTP-запросы (часто нужно)
 
-asyncpg>=0.30.0         #асинхронность
+asyncpg==0.30.0         #асинхронность
+Flask==3.1.2            #веб тест
+Flask-SQLAlchemy==3.1.1 #веб тест

@@ -1,0 +1,38 @@
+<!-- web_app/templates/index.html -->
+{% extends "base.html" %}
+
+{% block title %}Главная - TaskMax{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h2>📊 Статистика</h2>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Всего задач</h3>
+            <p class="stat-number">{{ total_tasks }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Активные</h3>
+            <p class="stat-number">{{ active_tasks }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Выполненные</h3>
+            <p class="stat-number">{{ completed_tasks }}</p>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <a href="{{ url_for('tasks') }}" class="btn btn-primary">📋 Все задачи</a>
+        <a href="{{ url_for('create_task') }}" class="btn btn-success">➕ Новая задача</a>
+    </div>
+
+    <div class="user-info">
+        <h3>👤 Информация о пользователе</h3>
+        <p><strong>ID:</strong> {{ user.max_id }}</p>
+        <p><strong>Имя:</strong> {{ user.username or 'Не указано' }}</p>
+        <p><strong>Часовой пояс:</strong> {{ user.timezone }}</p>
+        <p><strong>Зарегистрирован:</strong> {{ user.created_at.strftime('%d.%m.%Y %H:%M') }}</p>
+    </div>
+</div>
+{% endblock %}

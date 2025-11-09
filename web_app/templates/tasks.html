@@ -1,0 +1,77 @@
+<!-- web_app/templates/tasks.html -->
+{% extends "base.html" %}
+
+{% block title %}Задачи - TaskMax{% endblock %}
+
+{% block content %}
+<div class="tasks-header">
+    <h2>📋 Мои задачи</h2>
+    
+    <div class="filters">
+        <a href="{{ url_for('tasks') }}?status=all" class="filter-btn {% if status_filter == 'all' %}active{% endif %}">
+            Все ({{ tasks|length }})
+        </a>
+        <a href="{{ url_for('tasks') }}?status=active" class="filter-btn {% if status_filter == 'active' %}active{% endif %}">
+            Активные
+        </a>
+        <a href="{{ url_for('tasks') }}?status=completed" class="filter-btn {% if status_filter == 'completed' %}active{% endif %}">
+            Выполненные
+        </a>
+    </div>
+</div>
+
+{% if tasks %}
+<div class="tasks-list">
+    {% for task in tasks %}
+    <div class="task-card {% if not task.status_in_work %}completed{% endif %}">
+        <div class="task-header">
+            <h3 class="task-title">{{ task.title }}</h3>
+            <div class="task-priority priority-{{ task.priority }}">
+                {% if task.priority == 2 %}🔥 Высокий
+                {% elif task.priority == 1 %}⚡ Средний
+                {% else %}⚪ Низкий{% endif %}
+            </div>
+        </div>
+        
+        {% if task.description %}
+        <p class="task-description">{{ task.description }}</p>
+        {% endif %}
+        
+        <div class="task-meta">
+            <span class="task-date">Создана: {{ task.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+            {% if task.due_date %}
+            <span class="task-due">Срок: {{ task.due_date.strftime('%d.%m.%Y %H:%M') }}</span>
+            {% endif %}
+        </div>
+        
+        <div class="task-actions">
+            <form action="{{ url_for('toggle_task', task_id=task.id) }}" method="post" class="inline-form">
+                <button type="submit" class="btn btn-sm {% if task.status_in_work %}btn-warning{% else %}btn-success{% endif %}">
+                    {% if task.status_in_work %}✅ Выполнить{% else %}↩️ Вернуть{% endif %}
+                </button>
+            </form>
+            
+            <form action="{{ url_for('update_priority', task_id=task.id) }}" method="post" class="inline-form">
+                <select name="priority" onchange="this.form.submit()" class="priority-select">
+                    <option value="0" {% if task.priority == 0 %}selected{% endif %}>Низкий</option>
+                    <option value="1" {% if task.priority == 1 %}selected{% endif %}>Средний</option>
+                    <option value="2" {% if task.priority == 2 %}selected{% endif %}>Высокий</option>
+                </select>
+            </form>
+            
+            <form action="{{ url_for('delete_task', task_id=task.id) }}" method="post" class="inline-form">
+                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Удалить задачу?')">
+                    🗑️ Удалить
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>📝 Задач пока нет</p>
+    <a href="{{ url_for('create_task') }}" class="btn btn-primary">Создать первую задачу</a>
+</div>
+{% endif %}
+{% endblock %}

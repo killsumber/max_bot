@@ -1,0 +1,36 @@
+<!-- web_app/templates/create_task.html -->
+{% extends "base.html" %}
+
+{% block title %}Новая задача - TaskMax{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>➕ Новая задача</h2>
+    
+    <form method="post" class="task-form">
+        <div class="form-group">
+            <label for="title">Название задачи *</label>
+            <input type="text" id="title" name="title" required class="form-control">
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Описание</label>
+            <textarea id="description" name="description" rows="4" class="form-control"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="priority">Приоритет</label>
+            <select id="priority" name="priority" class="form-control">
+                <option value="0">⚪ Низкий</option>
+                <option value="1" selected>⚡ Средний</option>
+                <option value="2">🔥 Высокий</option>
+            </select>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Создать задачу</button>
+            <a href="{{ url_for('tasks') }}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
