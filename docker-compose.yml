@@ -19,21 +19,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # Liquibase миграции (выполняется один раз после старта PostgreSQL)
-  liquibase-migrate:
-    image: ${LIQUIBASE_IMAGE}
-    depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      LIQUIBASE_URL: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
-      LIQUIBASE_USERNAME: ${POSTGRES_USER}
-      LIQUIBASE_PASSWORD: ${POSTGRES_PASSWORD}
-      LIQUIBASE_CHANGELOG: /liquibase/changelog-master.xml
-    volumes:
-      - ./liquibase/changelog:/liquibase/changelog
-    command: update
-
   # PostgreSQL exporter для Prometheus
   postgres-exporter:
     image: ${EXPORTER_IMAGE}
