@@ -26,8 +26,8 @@ def get_connection():
 
     return psycopg2.connect(
         host=os.getenv("POSTGRES_HOST"),
-        port=int(os.getenv("POSTGRES_PORT")),  # ← int, чтобы избежать ошибок
-        database=os.getenv("POSTGRES_DB"),
+        port = int(os.getenv("POSTGRES_PORT", "6432")),  # 5432 - стандартный порт PostgreSQ
+        database=os.getenv("POSTGRES_DB", "postgres"),
         user=os.getenv("POSTGRES_USER"),
         password=os.getenv("POSTGRES_PASSWORD")
     )
